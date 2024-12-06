@@ -10,7 +10,7 @@ export const register = async(req,res)=>{
     try{
       const{fullname,email,phoneNumber,password,role} = req.body;
 
-      if(!fullname ||!email || !phoneNumbe || !password|| !role){
+      if(!fullname ||!email || !phoneNumber || !password|| !role){
         return res.status(400).json({
             message:"something is missing",
             success:false
@@ -92,6 +92,8 @@ export const login = async(req,res)=>{
             
           return res.status(200).cookie("token",token,{maxAge:1*24*60*60*1000,httpOnly:true,sameSite:"strict"}).json({
             message:`welcome back ${user.fullname}`,
+            user,
+            token,
             success:true
           })
 
@@ -123,14 +125,18 @@ export const updateProfile = async(req,res)=>{
     try{
      const {fullname,email,phoneNumber,bio,skills} = req.body;
       //req.file
-      if(!fullname || !email || !phoneNumber || !bio || !skills){
-        return res.status(400).json({
-            message:"something is missing",
-            success:false
-        })
-      }
-         
-      const skillsArray = skills.split(",");
+    //   if(!fullname || !email || !phoneNumber || !bio || !skills){
+    //     return res.status(400).json({
+    //         message:"something is missing",
+    //         success:false
+    //     })
+    //   }
+    let skillsArray;
+    
+         if(skills){
+            skillsArray = skills.split(",");
+         }
+      
 
       const userId = req.id;//middleware
 
@@ -143,11 +149,11 @@ export const updateProfile = async(req,res)=>{
         })
       }
       //update data
-       user.fullname = fullname,
-       user.email=email,
-       user.phoneNumber = phoneNumber,
-       user.profile.bio = bio,
-       user.profile.skills = skillsArray
+       if(fullname)user.fullname = fullname
+       if(email)user.email=email
+       if(phoneNumber)user.phoneNumber = phoneNumber
+       if(bio)user.profile.bio = bio
+       if(skills)user.profile.skills = skillsArray
          
 
        //resume comes later here
