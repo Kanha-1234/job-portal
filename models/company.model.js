@@ -22,8 +22,8 @@ const companySchema = new mongoose.Schema({
         type:String,
     },
     userId:{
-        type:String,
-        ref:'user',
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User',
         required:true
     }
 },{timestamps:true});
