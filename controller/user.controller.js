@@ -32,7 +32,7 @@ export const register = async(req,res)=>{
 
        return res.status(201).json({
           message:"user created successfully",
-          success:false
+          success:true
        })
 
     }
